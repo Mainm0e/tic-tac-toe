@@ -22,7 +22,6 @@ const mrIfElse = [
     [2, 1]
 ]
 
-
 class TicTacToe {
     constructor() {
         this.board = [
@@ -39,6 +38,7 @@ class TicTacToe {
         this.sourceCell = null;
 
         this.playerTurn = true;
+        this.mrIfElseTurn = 0;
         this.possibleMoves = [];
 
     }
@@ -69,7 +69,7 @@ class TicTacToe {
     start() {
         this.add("X", player);
         this.add("O", mrIfElse);
-        this.setupDragAndDrop("X");
+        this.addEvent("X");
         this.mrIfElse = new MrIfElse(this.screen, this.board, "O");
         this.gameLoop();
     }
@@ -131,9 +131,16 @@ class TicTacToe {
 
         if (!this.playerTurn) {
             // 3 seconds delay
+            this.mrIfElseTurn += 1;
+            console.log("counting", this.mrIfElseTurn)
+            if (this.mrIfElseTurn >= 100) {
+                console.log("mrIfElse turn");
+                this.playerTurn = this.mrIfElse.move();
+                this.chageDragable("X", this.playerTurn);
+                this.mrIfElseTurn = 0;
+                console.log("counting", this.mrIfElseTurn)
+            }
 
-            this.playerTurn = this.mrIfElse.move();
-            this.chageDragable("X", this.playerTurn);
         }
 
         // Update the game board based on player locations
@@ -204,12 +211,14 @@ class TicTacToe {
 
     }
 
-    //* -----drag system---- *// 
-    setupDragAndDrop(player) {
+    //* -----event system---- *// 
+    addEvent(player) {
         const objects = document.querySelectorAll(`.${player}`);
         objects.forEach(object => {
+            //setupDragAndDrop(object);
             object.addEventListener('dragstart', this.dragStart.bind(this));
             object.addEventListener('dragend', this.dragEnd.bind(this));
+            object.addEventListener('click', this.select_object.bind(this));
         });
 
         // Add dragover and drop event listeners to cells
@@ -223,6 +232,11 @@ class TicTacToe {
     }
 
     dragStart(event) {
+        console.log("im drag this object", this.playerTurn);
+        this.possibleMoves = [];
+        if (!this.playerTurn) {
+            return;
+        }
         // add pick sound
         sound.pick.play();
         sound.pick.currentTime = 0;
@@ -232,8 +246,8 @@ class TicTacToe {
     }
 
     dragEnd(event) {
-        this.possibleMoves = [];
         this.chageDragable("X", this.playerTurn);
+        this.possibleMoves = [];
         this.changeCellColor();
     }
 
@@ -270,13 +284,14 @@ class TicTacToe {
     }
 
     chageDragable(player, value) {
-            const element = document.querySelectorAll(`.${player}`);
-            element.forEach(element => {
-                // change attribute draggable to false
-                element.setAttribute('draggable', value);
-            });
-        }
-        //* -----drag system---- *// 
+        const element = document.querySelectorAll(`.${player}`);
+        element.forEach(element => {
+            // change attribute draggable to false
+            element.setAttribute('draggable', value);
+        });
+    }
+
+    //* -----drag system---- *// 
 
 
     // * find possible ways to move
@@ -320,8 +335,65 @@ class TicTacToe {
         });
     }
 
+    //* -----select object---- *//
+    select_object(event) {
+        if (!this.playerTurn) {
+            return;
+        }
 
-    // * create
+        sound.pick.play();
+        sound.pick.currentTime = 0;
+        // clear all possible moves and change cell color
+        this.possibleMoves = [];
+        this.changeCellColor();
+        console.log("im select this object", event.target);
+        this.findNextCell(event.target.parentElement);
+        this.draggedPlayer = event.target;
+        // Store the dragged player element
+        // add event lister if the player click on possible moves element it will move that player to that cell
+        // if the player click on the same cell it will clear all possible moves and change cell color
+
+        // find all possible moves
+        this.possibleMoves.forEach(cell => {
+            const cellElement = this.findCell(cell[0], cell[1]);
+            cellElement.addEventListener('click', this.moveObject.bind(this));
+        });
+    }
+
+    moveObject(cell) {
+        console.log("im move this object to", player, cell);
+
+        // move player to that cell
+        console.log("cell", cell.target)
+        const targetCell = cell.target;
+        let possible = false;
+        this.possibleMoves.forEach(cell => {
+            // check if the target cell is in the possible moves by comparing the data attribute
+            console.log("traget cell", targetCell.dataset.rowIndex, targetCell.dataset.cellIndex)
+            if (cell[0] == targetCell.dataset.rowIndex && cell[1] == targetCell.dataset.cellIndex) {
+                possible = true;
+            }
+
+        });
+
+        if (targetCell.classList.contains('cell') && !targetCell.firstChild && possible) {
+            // add drop sound
+            sound.drop.play();
+            sound.drop.currentTime = 0;
+
+            targetCell.appendChild(this.draggedPlayer); // Append the dragged player to the target cell
+            this.draggedPlayer = null; // Reset the dragged player
+            this.sourceCell = null; // Reset the source cell
+            this.playerTurn = false
+            this.possibleMoves = [];
+            this.changeCellColor();
+            possible = false;
+
+        }
+    }
+
+
+    //* -----create system---- *// 
 
     gamescreen() {
         this.screen = document.createElement('div');

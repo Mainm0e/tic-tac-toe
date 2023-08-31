@@ -56,10 +56,6 @@
     justify-content: center;
 }
 
-.cell:hover {
-    background: blue;
-}
-
 .active {
     background: lime;
 }
