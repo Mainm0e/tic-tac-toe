@@ -4,6 +4,7 @@
  */
 import MrIfElse from "./mr_ifelse.js";
 import { Element_Root } from "./config.js";
+import { sound } from "./sound.js";
 
 // * game variables
 
@@ -42,9 +43,30 @@ class TicTacToe {
 
     }
 
-    // * main entry point
+    // * render screen
     render() {
+        // how i can get event onlick on button
         Element_Root.appendChild(this.gamescreen());
+
+        const start_screen = document.createElement('div');
+        start_screen.classList.add('start-screen');
+        start_screen.innerHTML = `
+        <div class="start-screen__title">Tic Tac Toe</div>
+        <div class="start-screen__button">
+            <button class="start-btn">Start</button>
+        </div>
+        `;
+        document.getElementById("board").appendChild(start_screen);
+        document.querySelector('.start-btn').addEventListener('click', () => {
+            sound.click.play();
+            sound.click.currentTime = 0;
+            document.getElementById("board").removeChild(start_screen);
+            this.start();
+        });
+    }
+
+    // * start game
+    start() {
         this.add("X", player);
         this.add("O", mrIfElse);
         this.setupDragAndDrop("X");
@@ -52,10 +74,58 @@ class TicTacToe {
         this.gameLoop();
     }
 
+    // * game over
+    gameOver() {
+        // remove all event listener
+        // show game over screen
+        // show winner
+        // show play again button
+        let game_over_screen = document.createElement('div');
+        game_over_screen.classList.add('game-over-screen');
+        game_over_screen.innerHTML = `
+        <div class="game-over-screen__title">Game Over</div>
+        <div class="game-over-screen__winner">Winner: ${this.winner}</div>
+        <div class="game-over-screen__button">
+            <button class="play-again-btn">Play Again</button>
+        </div>
+        `;
+        document.getElementById("board").appendChild(game_over_screen);
+        document.querySelector('.play-again-btn').addEventListener('click', () => {
+            sound.click.play();
+            sound.click.currentTime = 0;
+            document.getElementById("board").removeChild(game_over_screen);
+            this.restart();
+        });
+    }
+
+    // * restart game
+    // reset all variables to default value and delete screen then render new screen
+    restart() {
+        this.board = [
+            [null, null, null],
+            [null, null, null],
+            [null, null, null]
+        ];
+
+        this.player = 'X';
+        this.winner = null;
+        this.isOver = false;
+
+        this.draggedPlayer = null;
+        this.sourceCell = null;
+
+        this.playerTurn = true;
+        this.possibleMoves = [];
+
+        this.screen.innerHTML = "";
+        // remove old screen
+        document.getElementById("gamescreen").remove();
+        this.render();
+    }
+
     // * game mechanics
     gameLoop() {
         if (this.isOver) {
-            console.log('Game over!', this.winner);
             return;
         }
 
@@ -86,6 +156,7 @@ class TicTacToe {
 
     }
 
+    // * check winner
     checkWinner() {
         // Check for horizontal wins
         // Check for vertical wins
@@ -98,6 +169,7 @@ class TicTacToe {
                 console.log('horizontal win');
                 this.winner = this.player;
                 this.isOver = true;
+                this.gameOver();
                 return;
             }
 
@@ -106,6 +178,7 @@ class TicTacToe {
                 console.log('vertical win');
                 this.winner = this.player;
                 this.isOver = true;
+                this.gameOver();
                 return;
             }
 
@@ -115,6 +188,7 @@ class TicTacToe {
                 console.log('horizontal win');
                 this.winner = this.mrIfElse.name;
                 this.isOver = true;
+                this.gameOver();
                 return;
             }
 
@@ -123,15 +197,14 @@ class TicTacToe {
                 console.log('vertical win');
                 this.winner = this.mrIfElse.name;
                 this.isOver = true;
+                this.gameOver();
                 return;
             }
-
-
         })
 
     }
 
-    //!! drag
+    //* -----drag system---- *// 
     setupDragAndDrop(player) {
         const objects = document.querySelectorAll(`.${player}`);
         objects.forEach(object => {
@@ -150,6 +223,9 @@ class TicTacToe {
     }
 
     dragStart(event) {
+        // add pick sound
+        sound.pick.play();
+        sound.pick.currentTime = 0;
         this.draggedPlayer = event.target; // Store the dragged player element
         this.sourceCell = event.target.parentElement; // Store the source cell
         this.findNextCell(this.sourceCell);
@@ -166,40 +242,44 @@ class TicTacToe {
     }
 
     drop(event) {
-            event.preventDefault();
-            if (this.draggedPlayer) {
-                const targetCell = event.target;
-                let possible = false;
-                console.log("possible move: ", this.possibleMoves)
-                this.possibleMoves.forEach(cell => {
-                    // check if the target cell is in the possible moves by comparing the data attribute
-                    console.log("traget cell", targetCell.dataset.rowIndex, targetCell.dataset.cellIndex)
-                    if (cell[0] == targetCell.dataset.rowIndex && cell[1] == targetCell.dataset.cellIndex) {
-                        possible = true;
-                    }
-
-                });
-                if (targetCell.classList.contains('cell') && !targetCell.firstChild && possible) {
-                    targetCell.appendChild(this.draggedPlayer); // Append the dragged player to the target cell
-                    this.draggedPlayer = null; // Reset the dragged player
-                    this.sourceCell = null; // Reset the source cell
-                    this.playerTurn = false
-                    possible = false;
+        event.preventDefault();
+        if (this.draggedPlayer) {
+            const targetCell = event.target;
+            let possible = false;
+            console.log("possible move: ", this.possibleMoves)
+            this.possibleMoves.forEach(cell => {
+                // check if the target cell is in the possible moves by comparing the data attribute
+                console.log("traget cell", targetCell.dataset.rowIndex, targetCell.dataset.cellIndex)
+                if (cell[0] == targetCell.dataset.rowIndex && cell[1] == targetCell.dataset.cellIndex) {
+                    possible = true;
                 }
+
+            });
+            if (targetCell.classList.contains('cell') && !targetCell.firstChild && possible) {
+                // add drop sound
+                sound.drop.play();
+                sound.drop.currentTime = 0;
+
+                targetCell.appendChild(this.draggedPlayer); // Append the dragged player to the target cell
+                this.draggedPlayer = null; // Reset the dragged player
+                this.sourceCell = null; // Reset the source cell
+                this.playerTurn = false
+                possible = false;
             }
         }
-        //!! drop
-
-    chageDragable(player, value) {
-        const element = document.querySelectorAll(`.${player}`);
-        element.forEach(element => {
-            // change attribute draggable to false
-            element.setAttribute('draggable', value);
-        });
     }
 
+    chageDragable(player, value) {
+            const element = document.querySelectorAll(`.${player}`);
+            element.forEach(element => {
+                // change attribute draggable to false
+                element.setAttribute('draggable', value);
+            });
+        }
+        //* -----drag system---- *// 
 
-    // find next cell that is empty
+
+    // * find possible ways to move
     findNextCell(cell) {
         // get cell position
         const rowIndex = parseInt(cell.dataset.rowIndex);
@@ -246,6 +326,7 @@ class TicTacToe {
     gamescreen() {
         this.screen = document.createElement('div');
         this.screen.classList.add('gamescreen');
+        this.screen.id = "gamescreen";
         this.screen.appendChild(this.createBoard());
         return this.screen;
     }
@@ -262,6 +343,7 @@ class TicTacToe {
     createBoard() {
         const board = document.createElement('div');
         board.classList.add('board');
+        board.id = "board";
         this.board.forEach((row, rowIndex) => {
             row.forEach((cell, cellIndex) => {
                 board.appendChild(this.createBoardCell(rowIndex, cellIndex));

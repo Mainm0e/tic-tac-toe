@@ -1,3 +1,4 @@
+import { sound } from './sound.js';
 export default class MrIfElse {
 
     constructor(screen, board, name) {
@@ -18,6 +19,8 @@ export default class MrIfElse {
     }
 
     imMoving(move) {
+        sound.drop.play();
+        sound.drop.currentTime = 0;
         // get object in move.cell and append to move.possibleMoves 
 
         const object = move.cell.querySelector(`.${this.name}`);
