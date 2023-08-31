@@ -1,0 +1,55 @@
+.gamescreen {
+    background-color: #000000;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.board {
+    background-color: #FFF;
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-column-gap: 15px;
+    grid-row-gap: 15px;
+    height: 500px;
+    width: 500px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    padding: 15px;
+}
+
+.cell {
+    display: flex;
+    background: red;
+    align-items: center;
+    justify-content: center;
+}
+
+.cell:hover {
+    background: blue;
+}
+
+.active {
+    background: lime;
+}
+
+.O {
+    background: green;
+    height: 100px;
+    width: 100px;
+    z-index: 3;
+}
+
+.X {
+    background: yellow;
+    height: 100px;
+    width: 100px;
+    z-index: 3;
+}
