@@ -61,14 +61,14 @@
 }
 
 .O {
-    background: green;
+    background-image: url("./img/player_O.png");
     height: 100px;
     width: 100px;
     z-index: 3;
 }
 
 .X {
-    background: yellow;
+    background-image: url("./img/player_X.png");
     height: 100px;
     width: 100px;
     z-index: 3;
