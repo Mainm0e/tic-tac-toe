@@ -51,9 +51,15 @@ class TicTacToe {
         const start_screen = document.createElement('div');
         start_screen.classList.add('start-screen');
         start_screen.innerHTML = `
-        <div class="start-screen__title">Tic Tac Toe</div>
+        <div class="start-screen__title">
+        <span class="start-screen__title--1">You can't beat</span>
+        <span class="bot_name">
+        <span>Mr.</span>
+        <span> If Else</span>
+        </span>
+        </div>
         <div class="start-screen__button">
-            <button class="start-btn">Start</button>
+            <button class="start-btn">Let's see</button>
         </div>
         `;
         document.getElementById("board").appendChild(start_screen);
@@ -82,9 +88,17 @@ class TicTacToe {
         // show play again button
         let game_over_screen = document.createElement('div');
         game_over_screen.classList.add('game-over-screen');
+        // bully text
+        let bully_text = "I knew that you can't beat him.";
+        let winner_name = "Mr. If Else";
+        if (this.winner == "X") {
+            bully_text = "You beat him this time.";
+            winner_name = "You";
+        }
         game_over_screen.innerHTML = `
         <div class="game-over-screen__title">Game Over</div>
-        <div class="game-over-screen__winner">Winner: ${this.winner}</div>
+        <div class="game-over-screen__bully">${bully_text}</div>
+        <div class="game-over-screen__winner">Winner: ${winner_name}</div>
         <div class="game-over-screen__button">
             <button class="play-again-btn">Play Again</button>
         </div>
