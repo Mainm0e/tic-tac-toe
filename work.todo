@@ -1,12 +1,11 @@
 
 #Next update
 
-    - game screen mobile size
-    - update checktowin function: 
-    - update possibleToMove function that can move only top bottom left right
-    - add background
+    - update possibleToMove function that can move only top bottom left right // need to change but
     - update start and end screen
 
-    
-
 #updated
+    - add background : just random nice img from google image
+        // but own background is in proses
+    - update checktowin function: done
+    - game screen mobile size : some how !!

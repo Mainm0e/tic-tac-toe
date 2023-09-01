@@ -49,20 +49,32 @@ export default class MrIfElse {
             return nextMove;
         }
         // find Next cell of object
+        // can move only 1 cell to top, bottom, left, right
     findNextCell(cell) {
-        // get cell position
         let possibleMoves = [];
+        // get cell position
         const rowIndex = parseInt(cell.dataset.rowIndex);
         const cellIndex = parseInt(cell.dataset.cellIndex);
-        console.log(rowIndex, cellIndex);
-        for (let i = rowIndex - 1; i <= rowIndex + 1; i++) {
-            for (let j = cellIndex - 1; j <= cellIndex + 1; j++) {
-                if (i >= 0 && i < 3 && j >= 0 && j < 3) {
-                    const cell = this.findCell(i, j);
-                    if (!cell.firstChild) {
-                        // add this cell to this.possibleMoves
-                        possibleMoves.push([i, j]);
-                    }
+
+        // Define the four directions: top, bottom, left, and right
+        const directions = [
+            { row: rowIndex - 1, col: cellIndex }, // Top
+            { row: rowIndex + 1, col: cellIndex }, // Bottom
+            { row: rowIndex, col: cellIndex - 1 }, // Left
+            { row: rowIndex, col: cellIndex + 1 }, // Right
+        ];
+
+        // Check each direction for valid moves
+        for (const direction of directions) {
+            const { row, col } = direction;
+
+            // Check if the direction is within the grid bounds (0 to 2)
+            if (row >= 0 && row < 3 && col >= 0 && col < 3) {
+                const cell = this.findCell(row, col);
+
+                if (!cell.firstChild) {
+                    // add this cell to this.possibleMoves
+                    possibleMoves.push([row, col])
                 }
             }
         }

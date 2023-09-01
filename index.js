@@ -178,48 +178,65 @@ class TicTacToe {
     }
 
     // * check winner
-    checkWinner() {
+    // Create a function to check for a win for a specific player
+    checkPlayerWin(playerName) {
         // Check for horizontal wins
+        const horizontalWin = this.board.some(row => row.every(cell => cell === playerName));
+        if (horizontalWin) {
+            this.winner = playerName;
+            this.isOver = true;
+            this.gameOver();
+            return true;
+        }
+
         // Check for vertical wins
-        // Check for diagonal wins
-
-        this.board.forEach((row, rowIndex) => {
-            // check player win
-            const horizontalWin = row.every(cell => cell === this.player);
-            if (horizontalWin) {
-                this.winner = this.player;
-                this.isOver = true;
-                this.gameOver();
-                return;
-            }
-
-            const verticalWin = this.board.every(row => row[rowIndex] === this.player);
+        for (let columnIndex = 0; columnIndex < this.board[0].length; columnIndex++) {
+            const verticalWin = this.board.every(row => row[columnIndex] === playerName);
             if (verticalWin) {
-                this.winner = this.player;
+                this.winner = playerName;
                 this.isOver = true;
                 this.gameOver();
-                return;
+                return true;
             }
+        }
 
-            // check mrIfElse win
-            const horizontalWinMrIfElse = row.every(cell => cell === this.mrIfElse.name);
-            if (horizontalWinMrIfElse) {
-                this.winner = this.mrIfElse.name;
-                this.isOver = true;
-                this.gameOver();
-                return;
-            }
+        // Check for main diagonal win (top-left to bottom-right)
+        const mainDiagonalWin = this.board.every((row, index) => row[index] === playerName);
+        if (mainDiagonalWin) {
+            this.winner = playerName;
+            this.isOver = true;
+            this.gameOver();
+            return true;
+        }
 
-            const verticalWinMrIfElse = this.board.every(row => row[rowIndex] === this.mrIfElse.name);
-            if (verticalWinMrIfElse) {
-                this.winner = this.mrIfElse.name;
-                this.isOver = true;
-                this.gameOver();
-                return;
-            }
-        })
+        // Check for anti-diagonal win (top-right to bottom-left)
+        const antiDiagonalWin = this.board.every((row, index) => row[row.length - 1 - index] === playerName);
+        if (antiDiagonalWin) {
+            this.winner = playerName;
+            this.isOver = true;
+            this.gameOver();
+            return true;
+        }
 
+        return false; // No win found
     }
+
+    // In your checkWinner function, call checkPlayerWin for both players
+    checkWinner() {
+        // Check for a win for this.player
+        if (this.checkPlayerWin(this.player)) {
+            return;
+        }
+
+        // Check for a win for this.mrIfElse
+        if (this.checkPlayerWin(this.mrIfElse.name)) {
+            return;
+        }
+
+        // If no winner, continue with other checks or actions
+        // ...
+    }
+
 
     //* -----event system---- *// 
     addEvent(player) {
@@ -301,33 +318,32 @@ class TicTacToe {
 
 
     // * find possible ways to move
+    // can move only 1 cell to top, bottom, left, right
     findNextCell(cell) {
         // get cell position
         const rowIndex = parseInt(cell.dataset.rowIndex);
         const cellIndex = parseInt(cell.dataset.cellIndex);
-        // find empty in this.board that is close to the cell position
-        // check if the cell is empty change cell color
-        // if cell (0,0) check  cell (0,1) , cell (1,0), cell (1,1)
-        // if cell (0,1) check  cell (0,0) , cell (0,2), cell (1,0), cell (1,1), cell (1,2)
-        // if cell (0,2) check  cell (0,1) , cell (1,1), cell (1,2)
-        // if cell (1,0) check  cell (0,0) , cell (0,1), cell (1,1), cell (2,0), cell (2,1)
-        // if cell (1,1) check  cell (0,0) , cell (0,1), cell (0,2), cell (1,0), cell (1,2), cell (2,0), cell (2,1), cell (2,2)
-        // if cell (1,2) check  cell (0,1) , cell (0,2), cell (1,1), cell (2,1), cell (2,2)
-        // if cell (2,0) check  cell (1,0) , cell (1,1), cell (2,1)
-        // if cell (2,1) check  cell (1,0) , cell (1,1), cell (1,2), cell (2,0), cell (2,2)
-        // if cell (2,2) check  cell (1,1) , cell (1,2), cell (2,1)
 
-        // check if the cell is empty change cell color
+        // Define the four directions: top, bottom, left, and right
+        const directions = [
+            { row: rowIndex - 1, col: cellIndex }, // Top
+            { row: rowIndex + 1, col: cellIndex }, // Bottom
+            { row: rowIndex, col: cellIndex - 1 }, // Left
+            { row: rowIndex, col: cellIndex + 1 }, // Right
+        ];
 
-        for (let i = rowIndex - 1; i <= rowIndex + 1; i++) {
-            for (let j = cellIndex - 1; j <= cellIndex + 1; j++) {
-                if (i >= 0 && i < 3 && j >= 0 && j < 3) {
-                    const cell = this.findCell(i, j);
-                    if (!cell.firstChild) {
-                        // add this cell to this.possibleMoves
-                        this.possibleMoves.push([i, j]);
-                        cell.classList.add('active');
-                    }
+        // Check each direction for valid moves
+        for (const direction of directions) {
+            const { row, col } = direction;
+
+            // Check if the direction is within the grid bounds (0 to 2)
+            if (row >= 0 && row < 3 && col >= 0 && col < 3) {
+                const cell = this.findCell(row, col);
+
+                if (!cell.firstChild) {
+                    // add this cell to this.possibleMoves
+                    this.possibleMoves.push([row, col]);
+                    cell.classList.add('active');
                 }
             }
         }
