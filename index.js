@@ -3,24 +3,11 @@
  * 1 player vs Mr. If Else
  */
 import MrIfElse from "./mr_ifelse.js";
-import { Element_Root } from "./config.js";
+import { Element_Root, player, mrIfElse } from "./config.js";
 import { sound } from "./sound.js";
+import { template_start_screen, template_game_over_screen } from "./template.js";
 
-// * game variables
 
-// X spawn locations (row, cell)
-const player = [
-    [0, 1],
-    [2, 0],
-    [2, 2]
-]
-
-// Mr. If Else spawn locations (row, cell)
-const mrIfElse = [
-    [0, 0],
-    [0, 2],
-    [2, 1]
-]
 
 class TicTacToe {
     constructor() {
@@ -50,18 +37,7 @@ class TicTacToe {
 
         const start_screen = document.createElement('div');
         start_screen.classList.add('start-screen');
-        start_screen.innerHTML = `
-        <div class="start-screen__title">
-        <span class="start-screen__title--1">You can't beat</span>
-        <span class="bot_name">
-        <span>Mr.</span>
-        <span> If Else</span>
-        </span>
-        </div>
-        <div class="start-screen__button">
-            <button class="start-btn">Let's see</button>
-        </div>
-        `;
+        start_screen.innerHTML = template_start_screen();
         document.getElementById("board").appendChild(start_screen);
         document.querySelector('.start-btn').addEventListener('click', () => {
             sound.click.play();
@@ -95,14 +71,7 @@ class TicTacToe {
             bully_text = "You beat him this time.";
             winner_name = "You";
         }
-        game_over_screen.innerHTML = `
-        <div class="game-over-screen__title">Game Over</div>
-        <div class="game-over-screen__bully">${bully_text}</div>
-        <div class="game-over-screen__winner">Winner: ${winner_name}</div>
-        <div class="game-over-screen__button">
-            <button class="start-btn">Play Again</button>
-        </div>
-        `;
+        game_over_screen.innerHTML = template_game_over_screen(winner_name, bully_text);
         document.getElementById("board").appendChild(game_over_screen);
         document.querySelector('.start-btn').addEventListener('click', () => {
             sound.click.play();
