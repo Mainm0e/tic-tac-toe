@@ -1,5 +1,20 @@
+:root {
+    /* candy style */
+    --font-candy-shadow-1: 4px 3px 0px #7A7A7A;
+    --font-candy-shadow-1-hover: 4px 3px 0px #bea8a8;
+    /* white */
+    --font-color-1: #FFF;
+    /* cream pink color background*/
+    --cream-pink: #F7C1C1;
+    /*  */
+    --cell-color-1: #FFF;
+    /*  */
+    --bord-color-1: #000;
+}
+
 .gamescreen {
-    background-color: #000000;
+    background-image: url("./img/just-for-testing.jpg");
+    background-size: cover;
     width: 100%;
     height: 100%;
     position: absolute;
@@ -26,27 +41,68 @@
 }
 
 .start-screen {
-    background: #0000005e;
+    background-image: url(./img/just-for-testing.jpg);
+    background-size: cover;
     position: absolute;
     display: flex;
     width: 100%;
     height: 100%;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-around;
     flex-direction: column;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 40px;
+    color: var(--font-color-1);
+    text-shadow: var(--font-candy-shadow-1);
     z-index: 10;
+    flex-wrap: nowrap;
+    align-items: center;
+    align-content: space-between;
+}
+
+.start-btn {
+    display: inline-block;
+    padding: 0px 20px 5px 20px;
+    background-color: #ffcccb;
+    /* Cute pink color */
+    border: none;
+    border-radius: 20px;
+    box-shadow: var(--font-candy-shadow-1);
+    /* Rounded corners */
+    color: #fff;
+    /* Text color */
+    font-size: 32px;
+    font-weight: bold;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-shadow: var(--font-candy-shadow-1);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    /* Smooth hover transition */
+}
+
+.start-btn:hover {
+    background-color: #ff7f50;
+    color: black;
+    text-shadow: var(--font-candy-shadow-1-hover);
+    /* Lighter shade of pink on hover */
 }
 
 .game-over-screen {
-    background: #0000005e;
+    background-image: url(./img/just-for-testing.jpg);
+    background-size: cover;
     position: absolute;
     display: flex;
     width: 100%;
     height: 100%;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-around;
     flex-direction: column;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 40px;
+    color: var(--font-color-1);
+    text-shadow: var(--font-candy-shadow-1);
     z-index: 10;
+    flex-wrap: nowrap;
+    align-items: center;
+    align-content: space-between;
 }
 
 .cell {
@@ -62,6 +118,7 @@
 
 .O {
     background-image: url("./img/player_O.png");
+    background-size: contain;
     height: 100px;
     width: 100px;
     z-index: 3;
@@ -69,6 +126,7 @@
 
 .X {
     background-image: url("./img/player_X.png");
+    background-size: contain;
     height: 100px;
     width: 100px;
     z-index: 3;
@@ -84,4 +142,61 @@
     background-image: url("./img/cloud.png");
     background-repeat: repeat-x;
     animation: cloud 20s linear infinite;
+}
+
+
+/* check screen size if size is full windows screen to taple screen 
+
+@media only screen and (max-width: 1024px) {
+      .board {
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        transform: translate(0, 0);
+    } 
+} */
+
+
+/* check screen size if size is mobile screen */
+
+@media only screen and (max-width: 600px) {
+    .board {
+        height: 300px;
+        width: 300px;
+    }
+    .cell {
+        height: 100%;
+        width: 100%;
+    }
+    .O {
+        height: 50px;
+        width: 50px;
+    }
+    .X {
+        height: 50px;
+        width: 50px;
+    }
+}
+
+
+/* check screen size if size is mobile screen */
+
+@media only screen and (max-width: 400px) {
+    .board {
+        height: 300px;
+        width: 300px;
+    }
+    .cell {
+        height: 100%;
+        width: 100%;
+    }
+    .O {
+        height: 50px;
+        width: 50px;
+    }
+    .X {
+        height: 50px;
+        width: 50px;
+    }
 }

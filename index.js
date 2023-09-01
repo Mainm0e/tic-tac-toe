@@ -100,11 +100,11 @@ class TicTacToe {
         <div class="game-over-screen__bully">${bully_text}</div>
         <div class="game-over-screen__winner">Winner: ${winner_name}</div>
         <div class="game-over-screen__button">
-            <button class="play-again-btn">Play Again</button>
+            <button class="start-btn">Play Again</button>
         </div>
         `;
         document.getElementById("board").appendChild(game_over_screen);
-        document.querySelector('.play-again-btn').addEventListener('click', () => {
+        document.querySelector('.start-btn').addEventListener('click', () => {
             sound.click.play();
             sound.click.currentTime = 0;
             document.getElementById("board").removeChild(game_over_screen);
@@ -146,13 +146,13 @@ class TicTacToe {
         if (!this.playerTurn) {
             // 3 seconds delay
             this.mrIfElseTurn += 1;
-            console.log("counting", this.mrIfElseTurn)
+
             if (this.mrIfElseTurn >= 100) {
-                console.log("mrIfElse turn");
+
                 this.playerTurn = this.mrIfElse.move();
                 this.chageDragable("X", this.playerTurn);
                 this.mrIfElseTurn = 0;
-                console.log("counting", this.mrIfElseTurn)
+
             }
 
         }
@@ -187,7 +187,6 @@ class TicTacToe {
             // check player win
             const horizontalWin = row.every(cell => cell === this.player);
             if (horizontalWin) {
-                console.log('horizontal win');
                 this.winner = this.player;
                 this.isOver = true;
                 this.gameOver();
@@ -196,7 +195,6 @@ class TicTacToe {
 
             const verticalWin = this.board.every(row => row[rowIndex] === this.player);
             if (verticalWin) {
-                console.log('vertical win');
                 this.winner = this.player;
                 this.isOver = true;
                 this.gameOver();
@@ -206,7 +204,6 @@ class TicTacToe {
             // check mrIfElse win
             const horizontalWinMrIfElse = row.every(cell => cell === this.mrIfElse.name);
             if (horizontalWinMrIfElse) {
-                console.log('horizontal win');
                 this.winner = this.mrIfElse.name;
                 this.isOver = true;
                 this.gameOver();
@@ -215,7 +212,6 @@ class TicTacToe {
 
             const verticalWinMrIfElse = this.board.every(row => row[rowIndex] === this.mrIfElse.name);
             if (verticalWinMrIfElse) {
-                console.log('vertical win');
                 this.winner = this.mrIfElse.name;
                 this.isOver = true;
                 this.gameOver();
@@ -241,12 +237,9 @@ class TicTacToe {
             cell.addEventListener('dragover', this.dragOver.bind(this));
             cell.addEventListener('drop', this.drop.bind(this));
         });
-
-        console.log('Drag and drop setup complete.');
     }
 
     dragStart(event) {
-        console.log("im drag this object", this.playerTurn);
         this.possibleMoves = [];
         if (!this.playerTurn) {
             return;
@@ -274,10 +267,9 @@ class TicTacToe {
         if (this.draggedPlayer) {
             const targetCell = event.target;
             let possible = false;
-            console.log("possible move: ", this.possibleMoves)
+
             this.possibleMoves.forEach(cell => {
                 // check if the target cell is in the possible moves by comparing the data attribute
-                console.log("traget cell", targetCell.dataset.rowIndex, targetCell.dataset.cellIndex)
                 if (cell[0] == targetCell.dataset.rowIndex && cell[1] == targetCell.dataset.cellIndex) {
                     possible = true;
                 }
@@ -313,7 +305,6 @@ class TicTacToe {
         // get cell position
         const rowIndex = parseInt(cell.dataset.rowIndex);
         const cellIndex = parseInt(cell.dataset.cellIndex);
-        console.log(rowIndex, cellIndex);
         // find empty in this.board that is close to the cell position
         // check if the cell is empty change cell color
         // if cell (0,0) check  cell (0,1) , cell (1,0), cell (1,1)
@@ -360,7 +351,6 @@ class TicTacToe {
         // clear all possible moves and change cell color
         this.possibleMoves = [];
         this.changeCellColor();
-        console.log("im select this object", event.target);
         this.findNextCell(event.target.parentElement);
         this.draggedPlayer = event.target;
         // Store the dragged player element
@@ -375,15 +365,15 @@ class TicTacToe {
     }
 
     moveObject(cell) {
-        console.log("im move this object to", player, cell);
+
 
         // move player to that cell
-        console.log("cell", cell.target)
+
         const targetCell = cell.target;
         let possible = false;
         this.possibleMoves.forEach(cell => {
             // check if the target cell is in the possible moves by comparing the data attribute
-            console.log("traget cell", targetCell.dataset.rowIndex, targetCell.dataset.cellIndex)
+
             if (cell[0] == targetCell.dataset.rowIndex && cell[1] == targetCell.dataset.cellIndex) {
                 possible = true;
             }
