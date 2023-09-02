@@ -56,13 +56,24 @@ export default class MrIfElse {
         const rowIndex = parseInt(cell.dataset.rowIndex);
         const cellIndex = parseInt(cell.dataset.cellIndex);
 
-        // Define the four directions: top, bottom, left, and right
+        // Define the possible directions: top, bottom, left, right, and diagonals
         const directions = [
             { row: rowIndex - 1, col: cellIndex }, // Top
             { row: rowIndex + 1, col: cellIndex }, // Bottom
             { row: rowIndex, col: cellIndex - 1 }, // Left
             { row: rowIndex, col: cellIndex + 1 }, // Right
         ];
+
+        // Check if diagonal movements are allowed based on current position
+        if (!((rowIndex === 0 && cellIndex === 1) ||
+                (rowIndex === 1 && (cellIndex === 0 || cellIndex === 2)) ||
+                (rowIndex === 2 && cellIndex === 1))) {
+            directions.push({ row: rowIndex - 1, col: cellIndex - 1 }, // Top-left (diagonal)
+                { row: rowIndex - 1, col: cellIndex + 1 }, // Top-right (diagonal)
+                { row: rowIndex + 1, col: cellIndex - 1 }, // Bottom-left (diagonal)
+                { row: rowIndex + 1, col: cellIndex + 1 } // Bottom-right (diagonal)
+            );
+        }
 
         // Check each direction for valid moves
         for (const direction of directions) {

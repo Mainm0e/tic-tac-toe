@@ -1,10 +1,11 @@
 
 #Next update
 
-    - update possibleToMove function that can move only top bottom left right // need to change but
     - update start and end screen
+    - update board background
 
 #updated
+    - update possibleToMove function that can move only top bottom left right : done
     - add background : just random nice img from google image
         // but own background is in proses
     - update checktowin function: done

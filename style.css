@@ -33,6 +33,8 @@
     grid-template-rows: repeat(3, 1fr);
     grid-column-gap: 15px;
     grid-row-gap: 15px;
+    align-items: center;
+    justify-items: center;
     height: 500px;
     width: 500px;
     top: 50%;
@@ -64,8 +66,11 @@
 .cell {
     display: flex;
     background: red;
-    align-items: center;
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
     justify-content: center;
+    align-items: center;
 }
 
 .active {
@@ -122,30 +127,8 @@
         width: 300px;
     }
     .cell {
-        height: 100%;
-        width: 100%;
-    }
-    .O {
-        height: 50px;
-        width: 50px;
-    }
-    .X {
-        height: 50px;
-        width: 50px;
-    }
-}
-
-
-/* check screen size if size is mobile screen */
-
-@media only screen and (max-width: 400px) {
-    .board {
-        height: 300px;
-        width: 300px;
-    }
-    .cell {
-        height: 100%;
-        width: 100%;
+        height: 75px;
+        width: 75px;
     }
     .O {
         height: 50px;
