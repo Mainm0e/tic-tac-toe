@@ -121,6 +121,9 @@
     }
 }
 
+
+/* max-height */
+
 @media only screen and (max-height: 600px) {
     .start-screen__title {
         margin-bottom: 0;
