@@ -120,3 +120,27 @@
         font-size: 24px;
     }
 }
+
+@media only screen and (max-height: 600px) {
+    .start-screen__title {
+        margin-bottom: 0;
+    }
+    .start-screen__title--1 {
+        text-align: center;
+        font-size: 30px;
+        margin: 0;
+        padding: 0 50px;
+    }
+    .start-screen__title--2 {
+        font-size: 16px;
+    }
+    .start-screen__instructions {
+        margin-bottom: 5px;
+    }
+    .instructions_list li {
+        font-size: 14px;
+    }
+    .start-btn {
+        font-size: 24px;
+    }
+}

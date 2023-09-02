@@ -106,22 +106,28 @@
 }
 
 
-/* check screen size if size is full windows screen to taple screen 
-
-@media only screen and (max-width: 1024px) {
-      .board {
-        height: 100%;
-        width: 100%;
-        top: 0;
-        left: 0;
-        transform: translate(0, 0);
-    } 
-} */
-
-
 /* check screen size if size is mobile screen */
 
 @media only screen and (max-width: 600px) {
+    .board {
+        height: 300px;
+        width: 300px;
+    }
+    .cell {
+        height: 75px;
+        width: 75px;
+    }
+    .O {
+        height: 50px;
+        width: 50px;
+    }
+    .X {
+        height: 50px;
+        width: 50px;
+    }
+}
+
+@media only screen and (max-height: 600px) {
     .board {
         height: 300px;
         width: 300px;
