@@ -425,13 +425,14 @@ class TicTacToe {
     }
 
     createBoardCell(rowIndex, cellIndex) {
-            const cell = document.createElement('div');
-            cell.classList.add('cell');
-            cell.dataset.rowIndex = rowIndex;
-            cell.dataset.cellIndex = cellIndex;
-            return cell;
-        }
-        // player gonna be absolute position on that cell
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        cell.dataset.rowIndex = rowIndex;
+        cell.dataset.cellIndex = cellIndex;
+        return cell;
+    }
+
+    // player gonna be absolute position on that cell
     add(name, object) {
         // find the cell then append the player to that cell
         object.forEach((location) => {
@@ -440,6 +441,7 @@ class TicTacToe {
             cell.appendChild(player);
         });
     }
+
     findCell(rowIndex, cellIndex) {
         const cell = this.screen.querySelector(`.cell[data-row-index="${rowIndex}"][data-cell-index="${cellIndex}"]`);
         return cell;

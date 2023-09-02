@@ -8,8 +8,9 @@
     /* cream pink color background*/
     --cream-pink: #F7C1C1;
     --green-color: #165416;
-    /*  */
-    --cell-color-1: #FFF;
+    /* blue cream white*/
+    --cell-color-1: #d0efff;
+    ;
     /*  */
     --bord-color-1: #000;
 }
@@ -26,7 +27,8 @@
 }
 
 .board {
-    background-color: #FFF;
+    background-image: url("./img/table-1.png");
+    background-size: contain;
     position: relative;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -45,7 +47,7 @@
 }
 
 .game-over-screen {
-    background-image: url(./img/just-for-testing.jpg);
+    background-image: url("./img/table-1.png");
     background-size: cover;
     position: absolute;
     display: flex;
@@ -65,16 +67,24 @@
 
 .cell {
     display: flex;
-    background: red;
-    width: 100px;
-    height: 100px;
+    background-image: url("./img/cell-1.png");
+    background-size: contain;
+    width: 125px;
+    height: 125px;
     border-radius: 100%;
     justify-content: center;
     align-items: center;
 }
 
 .active {
-    background: lime;
+    background-image: url("./img/cell-1-animated.gif");
+    background-size: contain;
+    width: 125px;
+    height: 125px;
+    border-radius: 100%;
+    justify-content: center;
+    align-items: center;
+    animation: active 1s linear infinite;
 }
 
 .O {

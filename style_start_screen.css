@@ -1,5 +1,5 @@
 .start-screen {
-    background-image: url(./img/just-for-testing.jpg);
+    background-image: url("./img/table-1.png");
     background-size: cover;
     position: absolute;
     display: flex;
